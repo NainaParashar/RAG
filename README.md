@@ -33,6 +33,12 @@ python app.py build --pdf "data/uploads/nasa_systems_engineering_handbook_0.pdf"
 
 # 2. Ask a Question
 python app.py ask --question "How does risk management feed into technical reviews?"
+
+### Light-Mode CLI Usage (BM25 Only / Fast Startup)
+If you are running on a machine with low memory (no GPUs), you can bypass the heavy PyTorch embedding and reranking models completely:
+```bash
+python app.py build --pdf "data/uploads/nasa_systems_engineering_handbook_0.pdf" --light-mode
+python app.py ask --question "What is PDR?" --light-mode
 ```
 
 
