@@ -15,10 +15,11 @@ __pycache__/
 .vscode/
 
 # Project specifically generated Artifacts and DB
-data/chroma/
-data/*.json
-data/uploads/
+# Ignore user uploads but DO NOT ignore the main sample data PDF!
+data/uploads/*
+!data/uploads/nasa_systems_engineering_handbook_0.pdf
 *.pdf
+!data/uploads/nasa_systems_engineering_handbook_0.pdf
 .chroma/
 
 # Logs
