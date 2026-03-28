@@ -1,0 +1,25 @@
+# Environments
+.venv/
+venv/
+env/
+.env
+
+# Cache and Bytecode
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# IDEs
+.idea/
+.vscode/
+
+# Project specifically generated Artifacts and DB
+data/chroma/
+data/*.json
+data/uploads/
+*.pdf
+.chroma/
+
+# Logs
+*.log
