@@ -24,14 +24,17 @@ pip install -r requirements.txt
    - sparse: BM25 index
    - merge: Reciprocal Rank Fusion (RRF)
 
-3. **Multi-strategy retrieval (`src/hybrid_retriever.py`)**
+3. **Multi-strategy retrieval (`src/hybrid_retriever.py` / `src/pipeline.py`)**
    - acronym-expanded query
-   - parent section expansion
-   - cross-reference expansion from `see Section X.Y`
+   - multi-hop query decomposition (LLM sub-queries)
+   - recursive small-to-big context expansion (parent tracing)
+   - cross-reference expansion from `see Section X.Y` and generic section mentions
    - cross-encoder reranking
 
 4. **Structured synthesis (`src/synthesis.py`)**
    - system prompt with strict grounded-citation instructions
+   - citation hallucination validation (`validate_citations` anti-hallucination gate)
+   - strict ambiguity handling for unanswerable queries ("Insufficient Information" fallback)
    - GPT-4o synthesis when `OPENAI_API_KEY` is set
    - deterministic fallback summary for local/offline demo
 
