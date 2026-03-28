@@ -47,7 +47,16 @@ class HybridRetriever:
 
             docs = [c.text for c in chunks]
             embeddings = self.embedder.encode(docs, convert_to_numpy=True).tolist()
-            metadatas = [{k: v for k, v in asdict(c).items() if k != "text"} for c in chunks]
+            metadatas = []
+            for c in chunks:
+                m = {k: v for k, v in asdict(c).items() if k != "text" and v is not None}
+                # ChromaDB rejects empty lists and complex arrays in metadata
+                if "references" in m:
+                    if not m["references"]:
+                        del m["references"]
+                    else:
+                        m["references"] = ",".join(m["references"])
+                metadatas.append(m)
             ids = [c.id for c in chunks]
 
             # Upsert ensures rebuilds remain idempotent.
