@@ -60,12 +60,15 @@ class HybridRetriever:
             ids = [c.id for c in chunks]
 
             # Upsert ensures rebuilds remain idempotent.
-            self.collection.upsert(
-                documents=docs,
-                embeddings=embeddings,
-                metadatas=metadatas,
-                ids=ids,
-            )
+            # Batch upsert to prevent chroma limit crash
+            BATCH_SIZE = 5000
+            for i in range(0, len(docs), BATCH_SIZE):
+                self.collection.upsert(
+                    documents=docs[i:i+BATCH_SIZE],
+                    embeddings=embeddings[i:i+BATCH_SIZE],
+                    metadatas=metadatas[i:i+BATCH_SIZE],
+                    ids=ids[i:i+BATCH_SIZE],
+                )
 
         self.bm25 = BM25Okapi([c.text.split() for c in chunks])
 
