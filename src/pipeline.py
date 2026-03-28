@@ -107,6 +107,18 @@ class QAPipeline:
             self.load()
         assert self.retriever is not None
         sub_queries = decompose_query(query)
+        
+        # Handle cases where LLM returns a JSON object (dict) instead of a requested JSON list.
+        if isinstance(sub_queries, dict):
+            extracted = []
+            for v in sub_queries.values():
+                if isinstance(v, list):
+                    extracted.extend(v)
+            sub_queries = extracted if extracted else [query]
+            
+        if not isinstance(sub_queries, list):
+            sub_queries = [query]
+            
         # Ensure the original query is always considered
         if query not in sub_queries:
             sub_queries.insert(0, query)

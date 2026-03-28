@@ -87,13 +87,17 @@ class HybridRetriever:
     def _add_parent_sections(self, chunk_ids: list[str]) -> list[str]:
         expanded = list(chunk_ids)
         seen = set(expanded)
-        for cid in chunk_ids:
+        queue = list(chunk_ids)
+        
+        while queue:
+            cid = queue.pop(0)
             c = self.chunk_by_id[cid]
             if c.parent_section and c.parent_section in self.by_section:
-                for parent_chunk in self.by_section[c.parent_section][:2]:
+                for parent_chunk in self.by_section[c.parent_section]:
                     if parent_chunk.id not in seen:
                         expanded.append(parent_chunk.id)
                         seen.add(parent_chunk.id)
+                        queue.append(parent_chunk.id)  # recursively load parent's parents if needed
         return expanded
 
     def _resolve_cross_references(self, chunk_ids: list[str]) -> list[str]:
