@@ -82,8 +82,8 @@ graph TD
 **Decision:** We built an automated regex validator (`validate_citations`) that independently audits the LLM's final response text. If the LLM generates a Section ID that does not precisely map to the `section_number` metadata of the context chunks passed to it, it warns the user of an "Unverified Citation". 
 **Why:** Hallucination is the primary failure mode of RAG in technical environments. This mathematically guarantees traceability. If semantic relevance is too low, the prompt forcibly triggers an "Insufficient Information" fallback rather than guessing.
 
-### 5. Stream-Flavored Table Preservation
-**Decision:** Using Camelot's `flavor="stream"` to convert borderless NASA matrix tables into vertically isolated Markdown rows.
+### 5. Lattice-Flavored Table Preservation & Markdown Serialization
+**Decision:** Using Camelot's `flavor="lattice"` to extract bordered NASA matrix tables and convert them into vertically isolated Markdown rows.
 **Why:** Flattening charts structurally breaks their relationship logic. Serializing rows as markdown gives the LLM the coordinate context it needs to calculate cross-matrix queries (like "entry criteria for PDR").
 
 ## 4. Known Limitations and Failure Modes
