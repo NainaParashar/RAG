@@ -119,6 +119,19 @@ class QAPipeline:
         if not isinstance(sub_queries, list):
             sub_queries = [query]
             
+        # Strongly sanitize to ensure all subqueries are plain strings
+        clean_sqs = []
+        for item in sub_queries:
+            if isinstance(item, str):
+                clean_sqs.append(item)
+            elif isinstance(item, dict):
+                # If LLM returned list of dicts like [{"q": "text"}], grab first string value
+                vals = [v for v in item.values() if isinstance(v, str)]
+                if vals:
+                    clean_sqs.append(vals[0])
+                    
+        sub_queries = clean_sqs if clean_sqs else [query]
+            
         # Ensure the original query is always considered
         if query not in sub_queries:
             sub_queries.insert(0, query)
